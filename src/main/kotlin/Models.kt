@@ -43,6 +43,6 @@ data class Candlestick(
     }
 
     companion object {
-        private val NANOS_TO_CLOSE = 60L * 1000000000L
+        private const val NANOS_TO_CLOSE = 60L * 1000000000L
     }
 }
