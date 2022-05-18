@@ -1,4 +1,8 @@
-import handler.QuoteEventHandler
+package handler
+
+import Candlestick
+import Quote
+import QuoteEvent
 import local.Database
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -38,7 +42,7 @@ class QuoteEventHandlerTest {
                 Candlestick(
                     isin = stubbedIsin,
                     openTimestamp = Instant.now(),
-                    closeTimestamp = Instant.now().plusSeconds(60L),
+                    closeTimestamp = Instant.now().plusSeconds(60),
                     openPrice = it + 1.0,
                     highPrice = it + 3.0,
                     lowPrice = it + 0.5,
@@ -72,7 +76,7 @@ class QuoteEventHandlerTest {
                 Candlestick(
                     isin = stubbedIsin,
                     openTimestamp = Instant.now(),
-                    closeTimestamp = Instant.now().plusSeconds(60L),
+                    closeTimestamp = Instant.now().plusSeconds(60),
                     openPrice = it + 1.0,
                     highPrice = it + 3.0,
                     lowPrice = it + 0.5,
