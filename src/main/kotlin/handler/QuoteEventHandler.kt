@@ -18,7 +18,16 @@ object QuoteEventHandler {
 
         if (notClosedCandlestick == null) {
             println("### Adding by QuoteEvent        [${data.isin}] ###")
-            Database.new(Candlestick(data.isin, instant))
+            Database.candlesticks.add(
+                Candlestick(
+                    isin = data.isin,
+                    openTimestamp = instant,
+                    openPrice = data.price,
+                    highPrice = data.price,
+                    closingPrice = data.price,
+                    lowPrice = data.price
+                )
+            )
         }
     }
 }

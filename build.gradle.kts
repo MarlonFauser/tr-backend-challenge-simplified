@@ -1,45 +1,61 @@
 plugins {
-  kotlin("jvm") version "1.5.31"
-  application
+    kotlin("jvm") version "1.5.31"
+    jacoco
+    application
 }
 
 application {
-  mainClass.set("MainKt")
+    mainClass.set("MainKt")
 }
 
 group = "org.traderepublic.candlesticks"
 version = "1.1.1"
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 
 object DependencyVersions {
-  const val coroutines = "1.5.2"
-  const val http4k = "4.13.1.0"
-  const val jackson = "2.13.+"
-  const val mockk = "1.12.0"
-  const val slf4j = "1.7.36"
+    const val coroutines = "1.5.2"
+    const val http4k = "4.13.1.0"
+    const val jackson = "2.13.+"
+    const val mockk = "1.12.0"
+    const val slf4j = "1.7.36"
 }
 
 dependencies {
-  implementation(kotlin("stdlib"))
-  testImplementation(kotlin("test"))
+    implementation(kotlin("stdlib"))
+    testImplementation(kotlin("test"))
 
 
-  implementation(platform("org.http4k:http4k-bom:4.13.1.0"))
-  implementation("org.http4k:http4k-core")
-  implementation("org.http4k:http4k-server-netty")
-  implementation("org.http4k:http4k-client-websocket:${DependencyVersions.http4k}")
-  implementation("org.http4k:http4k-format-jackson:${DependencyVersions.http4k}")
-  implementation("org.slf4j:slf4j-log4j12:${DependencyVersions.slf4j}")
+    implementation(platform("org.http4k:http4k-bom:4.13.1.0"))
+    implementation("org.http4k:http4k-core")
+    implementation("org.http4k:http4k-server-netty")
+    implementation("org.http4k:http4k-client-websocket:${DependencyVersions.http4k}")
+    implementation("org.http4k:http4k-format-jackson:${DependencyVersions.http4k}")
+    implementation("org.slf4j:slf4j-log4j12:${DependencyVersions.slf4j}")
 
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${DependencyVersions.coroutines}")
-  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${DependencyVersions.jackson}")
-  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${DependencyVersions.jackson}")
-  testImplementation("io.mockk:mockk:${DependencyVersions.mockk}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${DependencyVersions.coroutines}")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${DependencyVersions.jackson}")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${DependencyVersions.jackson}")
+    testImplementation("io.mockk:mockk:${DependencyVersions.mockk}")
 }
 
 tasks.test {
-  useJUnitPlatform()
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+    reportsDirectory.set(layout.buildDirectory.dir("customJacocoReportDir"))
 }
