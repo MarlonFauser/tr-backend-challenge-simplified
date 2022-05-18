@@ -2,14 +2,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.Instant
 import java.time.Instant.now
 
-data class InstrumentEvent(open val type: Type, open val data: Instrument) {
+data class InstrumentEvent(val type: Type, val data: Instrument) {
     enum class Type {
         ADD,
         DELETE
     }
 }
 
-data class QuoteEvent(open val data: Quote) {
+data class QuoteEvent(val data: Quote) {
     var instant: Instant = now()
 }
 
