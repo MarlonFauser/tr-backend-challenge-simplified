@@ -1,4 +1,4 @@
-import implementation.CandlestickManagerImpl
+import candlestick.CandlestickManagerImpl
 import org.http4k.core.Method
 import org.http4k.core.Request
 import org.http4k.core.Response
@@ -9,27 +9,25 @@ import org.http4k.server.Http4kServer
 import org.http4k.server.Netty
 import org.http4k.server.asServer
 
-class Server(
-  port: Int = 9000,
-) {
-  var service : CandlestickManager = CandlestickManagerImpl()
+class Server(port: Int = 9000) {
+    var service: CandlestickManager = CandlestickManagerImpl()
 
-  private val routes = routes(
-    "candlesticks" bind Method.GET to { getCandlesticks(it) }
-  )
+    private val routes = routes(
+        "candlesticks" bind Method.GET to { getCandlesticks(it) }
+    )
 
-  private val server: Http4kServer = routes.asServer(Netty(port))
+    private val server: Http4kServer = routes.asServer(Netty(port))
 
-  fun start() {
-    server.start()
-  }
+    fun start() {
+        server.start()
+    }
 
-  private fun getCandlesticks(req: Request): Response {
-    val isin = req.query("isin")
-      ?: return Response(Status.BAD_REQUEST).body("{'reason': 'missing_isin'}")
+    private fun getCandlesticks(req: Request): Response {
+        val isin = req.query("isin")
+            ?: return Response(Status.BAD_REQUEST).body("{'reason': 'missing_isin'}")
 
-    val body = jackson.writeValueAsBytes(service.getCandlesticks(isin))
+        val body = jackson.writeValueAsBytes(service.getCandlesticks(isin))
 
-    return Response(Status.OK).body(body.inputStream())
-  }
+        return Response(Status.OK).body(body.inputStream())
+    }
 }

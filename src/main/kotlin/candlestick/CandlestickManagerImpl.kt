@@ -1,4 +1,4 @@
-package implementation
+package candlestick
 
 import Candlestick
 import CandlestickManager
