@@ -12,6 +12,7 @@ object QuoteEventHandler {
                 println("### Closing by QuoteEvent       [${data.isin}] ###")
                 close(instant)
             } else {
+                // println("### Updating                    [${data.isin}] ####")
                 setPrices(data.price)
             }
         }

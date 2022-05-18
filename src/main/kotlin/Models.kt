@@ -37,7 +37,6 @@ data class Candlestick(
     fun close(eventInstant: Instant) { closeTimestamp = eventInstant }
 
     fun setPrices(eventPrice: Price) {
-        // println("### Updating [${isin}] prices ####")
         if (eventPrice > highPrice) highPrice = eventPrice
         if (eventPrice < lowPrice) lowPrice = eventPrice
         closingPrice = eventPrice
