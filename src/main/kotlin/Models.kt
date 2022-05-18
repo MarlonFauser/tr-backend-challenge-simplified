@@ -9,9 +9,7 @@ data class InstrumentEvent(val type: Type, val data: Instrument) {
     }
 }
 
-data class QuoteEvent(val data: Quote) {
-    var instant: Instant = now()
-}
+data class QuoteEvent(val data: Quote, val instant: Instant = now())
 
 data class Instrument(val isin: ISIN, val description: String)
 typealias ISIN = String
@@ -28,11 +26,11 @@ data class Candlestick(
     @JsonIgnore
     val isin: ISIN,
     val openTimestamp: Instant,
+    var openPrice: Price,
+    var highPrice: Price,
+    var lowPrice: Price,
+    var closingPrice: Price,
     var closeTimestamp: Instant? = null,
-    var openPrice: Price? = null,
-    var highPrice: Price? = null,
-    var lowPrice: Price? = null,
-    var closingPrice: Price? = null,
 ) {
     fun needsToClose(eventInstant: Instant) = eventInstant >= openTimestamp.plusNanos(NANOS_TO_CLOSE)
 
@@ -42,9 +40,8 @@ data class Candlestick(
 
     fun setPrices(eventPrice: Price) {
         // println("### Updating [${isin}] prices ####")
-        if (openPrice == null) openPrice = eventPrice
-        if (highPrice == null || eventPrice > highPrice!!) highPrice = eventPrice
-        if (lowPrice == null || eventPrice < lowPrice!!) lowPrice = eventPrice
+        if (eventPrice > highPrice) highPrice = eventPrice
+        if (eventPrice < lowPrice) lowPrice = eventPrice
         closingPrice = eventPrice
     }
 
