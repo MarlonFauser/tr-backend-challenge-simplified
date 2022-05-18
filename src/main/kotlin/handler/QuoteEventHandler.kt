@@ -3,11 +3,11 @@ package handler
 import Candlestick
 import QuoteEvent
 import local.Database
-import local.Database.findNotClosed
+import local.Database.findOpened
 
 object QuoteEventHandler {
     fun handle(event: QuoteEvent) = event.apply {
-        val notClosedCandlestick = Database.candlesticks.findNotClosed(data.isin)?.apply {
+        val openedCandlestick = Database.candlesticks.findOpened(data.isin)?.apply {
             if (needsToClose(instant)) {
                 println("### Closing by QuoteEvent       [${data.isin}] ###")
                 close(instant)
@@ -16,7 +16,7 @@ object QuoteEventHandler {
             }
         }
 
-        if (notClosedCandlestick == null) {
+        if (openedCandlestick == null) {
             println("### Adding by QuoteEvent        [${data.isin}] ###")
             Database.candlesticks.add(
                 Candlestick(

@@ -34,9 +34,7 @@ data class Candlestick(
 ) {
     fun needsToClose(eventInstant: Instant) = eventInstant >= openTimestamp.plusNanos(NANOS_TO_CLOSE)
 
-    fun close(eventInstant: Instant) {
-        closeTimestamp = eventInstant
-    }
+    fun close(eventInstant: Instant) { closeTimestamp = eventInstant }
 
     fun setPrices(eventPrice: Price) {
         // println("### Updating [${isin}] prices ####")
