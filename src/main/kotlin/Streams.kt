@@ -40,7 +40,6 @@ class InstrumentStream(uriString: String = "ws://localhost:8032/instruments") {
 class QuoteStream(
     uriString: String = "ws://localhost:8032/quotes",
 ) {
-
     private val wsURI = Uri.of(uriString)
 
     private lateinit var ws: Websocket
